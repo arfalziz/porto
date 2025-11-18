@@ -118,7 +118,14 @@ export default async function handler(req, res) {
 
         // PUT /api/activities/:id - Update activity
         if (req.method === 'PUT') {
-            const { id } = req.query;
+            let id = req.query && req.query.id;
+            if (!id) {
+                try {
+                    const u = new URL(req.url, 'http://localhost');
+                    const parts = u.pathname.split('/').filter(Boolean);
+                    id = parts[parts.length - 1];
+                } catch (e) { id = null; }
+            }
             const { title, date, uploadImage, description } = req.body;
 
             const activity = await Activity.findByIdAndUpdate(
@@ -143,7 +150,14 @@ export default async function handler(req, res) {
 
         // DELETE /api/activities/:id - Delete activity
         if (req.method === 'DELETE') {
-            const { id } = req.query;
+            let id = req.query && req.query.id;
+            if (!id) {
+                try {
+                    const u = new URL(req.url, 'http://localhost');
+                    const parts = u.pathname.split('/').filter(Boolean);
+                    id = parts[parts.length - 1];
+                } catch (e) { id = null; }
+            }
 
             const activity = await Activity.findByIdAndDelete(id);
 

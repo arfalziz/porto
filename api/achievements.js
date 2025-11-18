@@ -118,7 +118,18 @@ export default async function handler(req, res) {
 
         // PUT /api/achievements/:id - Update achievement
         if (req.method === 'PUT') {
-            const { id } = req.query;
+            // Try to get id from query or from URL path (when routed)
+            let id = req.query && req.query.id;
+            if (!id) {
+                try {
+                    const u = new URL(req.url, 'http://localhost');
+                    const parts = u.pathname.split('/').filter(Boolean);
+                    id = parts[parts.length - 1];
+                } catch (e) {
+                    id = null;
+                }
+            }
+
             const { title, date, uploadImage, description } = req.body;
 
             const achievement = await Achievement.findByIdAndUpdate(
@@ -143,7 +154,14 @@ export default async function handler(req, res) {
 
         // DELETE /api/achievements/:id - Delete achievement
         if (req.method === 'DELETE') {
-            const { id } = req.query;
+            let id = req.query && req.query.id;
+            if (!id) {
+                try {
+                    const u = new URL(req.url, 'http://localhost');
+                    const parts = u.pathname.split('/').filter(Boolean);
+                    id = parts[parts.length - 1];
+                } catch (e) { id = null; }
+            }
 
             const achievement = await Achievement.findByIdAndDelete(id);
 
