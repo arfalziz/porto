@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #064fee;
+            --secondary-color: #063887;
+            --accent-color: #ffeb3b;
+            --text-dark: #2d3436;
+            --text-light: #ffffff;
+            --bg-light: #f9f9f9;
+            --transition: all 0.3s ease;
+            --admin-bg: #f0f2f5;
+            --admin-primary: #2c3e50;
+            --card-gap: 1.5rem;
+        }
+
+        /* Grid Layouts for Achievements and Activities */
+        .achievements-grid,
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--card-gap);
+            padding: 2rem 0;
+        }
+
+        .achievement-card,
+        .activity-card {
+            background: var(--bg-light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .achievement-card:hover,
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .achievement-image,
+        .activity-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .achievement-image img,
+        .activity-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .achievement-content,
+        .activity-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .achievement-content h3,
+        .activity-content h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+        }
+
+        .achievement-content .date,
+        .activity-content .date {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-content p,
+        .activity-content p {
+            margin: 0 0 1rem;
+            flex-grow: 1;
+        }
+
+        .card-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn.small {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .btn.danger {
+            background-color: #dc3545;
+        }
+
+        .btn.danger:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 1024px) {
+            .achievements-grid,
+            .activities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .achievements-grid,
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--accent-color);
+            color: var(--text-dark);
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Header */
+        header {
+            background: rgba(25, 7, 232, 0.95);
+            color: var(--text-light);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(106, 27, 154, 0.95);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 10px 10px;
+            overflow: hidden;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 20px;
+            transition: var(--transition);
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 235, 59, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            background: linear-gradient(45deg, rgba(77, 119, 210, 0.9), rgba(9, 6, 210, 0.9)),
+                        url('https://th.bing.com/th/id/OIP.4A5Pz6x8bUmM9BxmBOstHgHaEK?w=305&h=180&c=7&r=0&o=7&cb=ucfimgc2&dpr=1.5&pid=1.7&rm=3') center/cover fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-align: center;
+            padding: 20px;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            margin-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--bg-light);
+        }
+
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-image img {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .about-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .about-content p {
+            margin-bottom: 20px;
+        }
+
+        /* Profile & About Sections */
+        .about-section {
+            padding: 100px 0;
+            background: var(--bg-light);
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .profile-image {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .profile-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .profile-content h3 {
+            color: var(--secondary-color);
+            margin: 25px 0 15px;
+            font-size: 1.5rem;
+        }
+
+        .profile-content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-content li {
+            margin-bottom: 10px;
+            list-style-type: disc;
+        
+        }
+
+        /* Skills Section */
+        .skills-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .skill-card {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .skill-name {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            padding: 80px 0;
+            background: var(--bg-light);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .project-description {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .project-tag {
+            padding: 5px 10px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        .program-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .program-card-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .program-card-body {
+            padding: 20px;
+        }
+
+        .program-card-body ul {
+            margin-left: 20px;
+        }
+
+        .program-card-body li {
+            margin-bottom: 8px;
+            list-style-type: disc;
+        }
+
+        /* Admission Section */
+        .admission-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .step-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            line-height: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .requirements-list {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .requirements-list h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .requirement-item i {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-top: 3px;
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--bg-light);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .feature-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        /* News Section */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 20px;
+        }
+
+        .news-date {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .news-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 250px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, rgba(25, 7, 232, 0.95), rgba(235, 220, 8, 0.9));
+            color: white;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            margin-bottom: 20px;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(25, 7, 232, 0.95);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+            clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .admin-btn {
+            background: var(--admin-primary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .admin-btn:hover {
+            background: #1a252f;
+            transform: translateY(-3px);
+        }
+
+        .admin-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .admin-modal {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .admin-header {
+            background: var(--admin-primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .close-admin {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .admin-content {
+            padding: 20px;
+            background: var(--admin-bg);
+        }
+
+        .admin-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .admin-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #e0e0e0;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+            transition: var(--transition);
+        }
+
+        .admin-tab.active {
+            background: var(--admin-primary);
+            color: white;
+        }
+
+        .admin-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+        }
+
+        .news-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .news-table th,
+        .news-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .news-table th {
+            background: var(--admin-primary);
+            color: white;
+        }
+
+        .news-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .edit-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: rgba(106,27,154,0.98);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 40px 20px;
+                transition: var(--transition);
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                background: rgba(0,0,0,0.1);
+                display: none;
+                width: 100%;
+            }
+            
+            .dropdown:hover .dropdown-content,
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+                height: auto;
+                padding: 120px 20px 60px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .about-container,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-image {
+                order: -1;
+            }
+            
+            .profile-content {
+                padding: 30px 20px;
+            }
+
+            .calendar-container {
+                padding: 20px;
+            }
+
+            .calendar-table th, 
+            .calendar-table td {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+            
+            .admin-panel {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .section {
+                padding: 50px 0;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 10px 25px;
+            }
+            
+            .feature-card,
+            .news-card {
+                padding: 20px;
+            }
+
+            .calendar-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .admin-modal {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="\Logo.png" alt=>
+                <span>Arfalziz</span>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="nav-links" id="navLinks">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#achievements">Achievements</a>
+                <a href="#activities">Activities</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="admin-panel">
+        <div class="admin-btn" id="adminBtn">
+            <i class="fas fa-user-cog"></i>
+            <span>Admin</span>
+        </div>
+    </div>
+
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-modal">
+            <div class="admin-header">
+                <h2>Admin Panel</h2>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <button class="btn btn-secondary" id="adminLogout" style="display:none;">Logout</button>
+                    <button class="close-admin" id="closeAdmin">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="admin-content">
+                <div class="admin-tabs">
+                    <div class="admin-tab active" data-tab="achievements">Achievements</div>
+                    <div class="admin-tab" data-tab="activities">Activities</div>
+                </div>
+                
+                <!-- Achievements Form -->
+                <div class="admin-form" id="achievementsForm">
+                    <form id="achievementForm">
+                        <input type="hidden" id="achievementId">
+                        <div class="form-group">
+                            <label for="achievementTitle">Achievement Title</label>
+                            <input type="text" id="achievementTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="achievementDate">Date</label>
+                            <input type="date" id="achievementDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="achievementImage">Upload Image</label>
+                            <input type="file" id="achievementImage" accept="image/*">
+                            <input type="hidden" id="achievementExistingImage">
+                            <img id="achievementImagePreview" src="" alt="Preview" style="display:none; max-width:100%; margin-top:10px; border-radius:8px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="achievementDescription">Description</label>
+                            <textarea id="achievementDescription" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Save Achievement</button>
+                        <button type="button" class="btn btn-secondary cancel-edit" style="display: none;">Cancel</button>
+                    </form>
+                </div>
+
+                <!-- Activities Form -->
+                <div class="admin-form hidden" id="activitiesForm">
+                    <form id="activityForm">
+                        <input type="hidden" id="activityId">
+                        <div class="form-group">
+                            <label for="activityTitle">Activity Title</label>
+                            <input type="text" id="activityTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="activityDate">Date</label>
+                            <input type="date" id="activityDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="activityImage">Upload Image</label>
+                            <input type="file" id="activityImage" accept="image/*">
+                            <input type="hidden" id="activityExistingImage">
+                            <img id="activityImagePreview" src="" alt="Preview" style="display:none; max-width:100%; margin-top:10px; border-radius:8px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="activityDescription">Description</label>
+                            <textarea id="activityDescription" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Save Activity</button>
+                        <button type="button" class="btn btn-secondary cancel-edit" style="display: none;">Cancel</button>
+                    </form>
+                </div>
+                
+                <div class="admin-form hidden" id="newsListPanel">
+                    <h3>Daftar Berita</h3>
+                    <table class="news-table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Judul</th>
+                                <th>Gambar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="hero" id="home">
+        <div class="container hero-content">
+    
+            <h1>Hi, I'm Arif Nurul Al Aziz</h1>
+            <p>Creative Software Developer & UI/UX Designer</p>
+            <div class="social-links">
+                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" title="Dribbble"><i class="fab fa-dribbble"></i></a>
+            </div>
+            <a href="#contact" class="btn">Get in Touch</a>
+        </div>
+    </section>
+ 
+    <section class="section about" id="about">
+        <div class="container about-container">
+            <div class="about-image">
+                <img src="Profil.jpg" alt="Arif Profile" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x400?text=No+Profile';">
+            </div>
+            <div class="about-content">
+                <h2>About Me</h2>
+                <p>I'm a passionate software developer with 3 years of experience in creating beautiful and functional web applications. I specialize in front-end development and have a keen eye for design.</p>
+                <p>When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing my knowledge through instagram posts and tutorials.</p>
+                <a href="#projects" class="btn">View My Work</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section profile-section" id="skills">
+        <div class="container profile-container">
+            <div class="profile-content">
+                <h2>My Skills & Expertise</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <i class="fab fa-html5"></i>
+                        <h3>HTML5 & CSS3</h3>
+                        <p>Expert in creating responsive and modern web layouts with the latest HTML5 and CSS3 features.</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fab fa-js"></i>
+                        <h3>JavaScript</h3>
+                        <p>Strong knowledge of modern JavaScript, including ES6+ features and popular frameworks.</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fab fa-react"></i>
+                        <h3>React</h3>
+                        <p>Experience in building complex applications with React and its ecosystem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="section achievements-section" id="achievements">
+        <div class="container">
+            <h2 class="section-title">My Achievements</h2>
+            <div class="achievements-grid" id="achievementsContainer">
+                <!-- Achievements will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section class="section activities-section" id="activities">
+        <div class="container">
+            <h2 class="section-title">My Activities</h2>
+            <div class="activities-grid" id="activitiesContainer">
+                <!-- Activities will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section projects-section" id="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="Project 1">
+                    </div>
+                    <div class="project-content">
+                        <h3>E-commerce Platform</h3>
+                        <p>A full-stack e-commerce solution built with React and Node.js</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <a href="#" class="btn">View Project</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="Project 2">
+                    </div>
+                    <div class="project-content">
+                        <h3>Weather Dashboard</h3>
+                        <p>Real-time weather tracking application with OpenWeather API</p>
+                        <div class="project-tags">
+                            <span>JavaScript</span>
+                            <span>API</span>
+                            <span>CSS3</span>
+                        </div>
+                        <a href="#" class="btn">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>Arifalazis145@gmail.com</p>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-phone"></i>
+                        <h3>Phone</h3>
+                        <p>+62 81539256277</p>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Location</h3>
+                        <p>Lampung, Indonesia</p>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <input type="hidden" name="_subject" value="Portfolio Contact Form Submission">
+                    <input type="hidden" name="_captcha" value="false">
+                    <div id="contactStatus" style="margin-bottom:10px;"></div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+
+
+    <section class="section contact" id="contact">
+    
+        <!-- Login Modal -->
+<div id="loginOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+     background: rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:20px; border-radius:10px; width:300px; text-align:center;">
+        <h3>Admin Login</h3>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required style="width:100%; margin:5px 0; padding:5px;">
+            <input type="password" id="password" placeholder="Password" required style="width:100%; margin:5px 0; padding:5px;">
+            <button type="submit" style="width:100%; padding:5px; margin-top:10px;">Login</button>
+        </form>
+    </div>
+</div>
+
+        
+   <script>
+        
+        /*
+  Full Central JS: mobile menu, smooth scroll, admin login, admin CRUD for Achievements & Activities.
+*/
+
+// ---------- Mobile menu and smooth scroll ----------
+(function() {
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const hash = this.getAttribute('href');
+            if (hash.length > 1) {
+                e.preventDefault();
+                const target = document.querySelector(hash);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+                if (navLinks && navLinks.classList.contains('active')) navLinks.classList.remove('active');
+            }
+        });
+    });
+})();
+
+// ---------- Admin login & panel ----------
+(function() {
+    const adminBtn = document.getElementById('adminBtn');
+    const adminOverlay = document.getElementById('adminOverlay');
+    const closeAdmin = document.getElementById('closeAdmin');
+
+    const loginOverlay = document.getElementById('loginOverlay');
+    const loginForm = document.getElementById('loginForm');
+    // global flag so other modules (render functions) can check admin state
+    window.isAdminLoggedIn = window.isAdminLoggedIn || false;
+    let isAdminLoggedIn = window.isAdminLoggedIn;
+
+    function openAdminPanel() {
+        if (adminOverlay) adminOverlay.style.display = 'flex';
+        // default tab achievements
+        document.querySelectorAll('.admin-tab').forEach(t => {
+            if (t.dataset.tab === 'achievements') t.click();
+        });
+    }
+
+    adminBtn.addEventListener('click', () => {
+        if (!isAdminLoggedIn) {
+            if (loginOverlay) loginOverlay.style.display = 'flex';
+        } else {
+            openAdminPanel();
+        }
+    });
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (username === 'admin' && password === '123456') {
+                isAdminLoggedIn = true;
+                window.isAdminLoggedIn = true;
+                if (loginOverlay) loginOverlay.style.display = 'none';
+                // show logout button in admin header
+                const logoutBtn = document.getElementById('adminLogout'); if (logoutBtn) logoutBtn.style.display = 'inline-block';
+                openAdminPanel();
+                // re-render lists so admin-only buttons appear
+                if (typeof renderAchievements === 'function') renderAchievements();
+                if (typeof renderActivities === 'function') renderActivities();
+            } else {
+                alert('Username / Password salah!');
+            }
+        });
+    }
+
+    if (closeAdmin) {
+        closeAdmin.addEventListener('click', () => {
+            if (adminOverlay) adminOverlay.style.display = 'none';
+        });
+    }
+
+    // Logout handling
+    const adminLogoutBtn = document.getElementById('adminLogout');
+    if (adminLogoutBtn) {
+        adminLogoutBtn.addEventListener('click', function() {
+            isAdminLoggedIn = false;
+            window.isAdminLoggedIn = false;
+            // hide logout button
+            this.style.display = 'none';
+            // close admin panel
+            if (adminOverlay) adminOverlay.style.display = 'none';
+            // re-render to hide admin-only actions
+            if (typeof renderAchievements === 'function') renderAchievements();
+            if (typeof renderActivities === 'function') renderActivities();
+            alert('Admin logged out');
+        });
+    }
+
+    if (adminOverlay) {
+        adminOverlay.addEventListener('click', function(e) {
+            if (e.target === adminOverlay) adminOverlay.style.display = 'none';
+        });
+    }
+
+    // show/hide logout button based on current admin state
+    const logoutBtnInit = document.getElementById('adminLogout');
+    if (logoutBtnInit) {
+        if (window.isAdminLoggedIn) logoutBtnInit.style.display = 'inline-block';
+        else logoutBtnInit.style.display = 'none';
+    }
+
+    // Tab switching
+    const adminTabs = document.querySelectorAll('.admin-tab');
+    adminTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            adminTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const target = this.getAttribute('data-tab');
+            document.querySelectorAll('.admin-form').forEach(f => {
+                if (f.id && f.id.startsWith(target)) {
+                    f.classList.remove('hidden');
+                } else {
+                    f.classList.add('hidden');
+                }
+            });
+        });
+    });
+
+})();
+
+// ---------- Utilities ----------
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+function saveToLS(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+function loadFromLS(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch(e){ return []; } }
+function escapeHtml(str) { if (!str && str !== 0) return ''; return String(str).replace(/[&<>"']/g, function(s) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[s]; }); }
+
+// Helper: read File -> DataURL
+function fileToDataURL(file) {
+    return new Promise((resolve, reject) => {
+        if (!file) return resolve(null);
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('File read error'));
+        reader.readAsDataURL(file);
+    });
+}
+
+// ---------- Achievements & Activities CRUD (API Backend) ----------
+(async function() {
+    // API Configuration
+    // API Configuration - Auto-detect environment
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    const API_URL = isProduction 
+        ? `${window.location.origin}/api`  // Production: same domain
+        : 'http://localhost:5000/api';     // Development: localhost backend
+    
+    let achievements = [];
+    let activities = [];
+    let isLoadingFromAPI = false;
+
+    const achievementsContainer = document.getElementById('achievementsContainer');
+    const activitiesContainer = document.getElementById('activitiesContainer');
+
+    const achievementForm = document.getElementById('achievementForm');
+    const activityForm = document.getElementById('activityForm');
+
+    // Get cancel buttons for achievements and activities forms
+    const achCancelBtns = document.querySelectorAll('#achievementForm .cancel-edit');
+    const actCancelBtns = document.querySelectorAll('#activityForm .cancel-edit');
+
+    function renderAchievements() {
+        if (!achievementsContainer) return;
+        achievementsContainer.innerHTML = '';
+        if (achievements.length === 0) {
+            achievementsContainer.innerHTML = '<p class="muted">No achievements yet. Use Admin panel to add.</p>';
+            return;
+        }
+        achievements.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'achievement-card';
+            card.innerHTML = `
+                <div class="achievement-image"><img src="${escapeHtml(item.uploadImage)}" alt="${escapeHtml(item.title)}" onerror="this.onerror=null;this.src='https://via.placeholder.com/600x300?text=No+Image';"></div>
+                <div class="achievement-content">
+                    <h3>${escapeHtml(item.title)}</h3>
+                    <p class="date">${escapeHtml(new Date(item.date).toLocaleDateString('id-ID'))}</p>
+                    <p>${escapeHtml(item.description)}</p>
+                        ${window.isAdminLoggedIn ? `
+                        <div class="card-actions">
+                            <button class="btn small edit-ach" data-id="${item._id}">Edit</button>
+                            <button class="btn small danger delete-ach" data-id="${item._id}">Delete</button>
+                        </div>
+                        ` : ``}
+                </div>`;
+            achievementsContainer.appendChild(card);
+        });
+    }
+
+    function renderActivities() {
+        if (!activitiesContainer) return;
+        activitiesContainer.innerHTML = '';
+        if (activities.length === 0) {
+            activitiesContainer.innerHTML = '<p class="muted">No activities yet. Use Admin panel to add.</p>';
+            return;
+        }
+        activities.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'activity-card';
+            card.innerHTML = `
+                <div class="activity-image"><img src="${escapeHtml(item.uploadImage)}" alt="${escapeHtml(item.title)}" onerror="this.onerror=null;this.src='https://via.placeholder.com/600x300?text=No+Image';"></div>
+                <div class="activity-content">
+                    <h3>${escapeHtml(item.title)}</h3>
+                    <p class="date">${escapeHtml(new Date(item.date).toLocaleDateString('id-ID'))}</p>
+                    <p>${escapeHtml(item.description)}</p>
+                    ${window.isAdminLoggedIn ? `
+                    <div class="card-actions">
+                        <button class="btn small edit-act" data-id="${item._id}">Edit</button>
+                        <button class="btn small danger delete-act" data-id="${item._id}">Delete</button>
+                    </div>
+                    ` : ``}
+                </div>`;
+            activitiesContainer.appendChild(card);
+        });
+    }
+
+    async function loadAchievements() {
+        try {
+            isLoadingFromAPI = true;
+            const response = await fetch(`${API_URL}/achievements`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const result = await response.json();
+            if (result.success) {
+                achievements = result.data || [];
+            } else {
+                achievements = [];
+            }
+            renderAchievements();
+        } catch (err) {
+            console.error('Failed to load achievements:', err);
+            achievements = [];
+            renderAchievements();
+        } finally {
+            isLoadingFromAPI = false;
+        }
+    }
+
+    async function loadActivities() {
+        try {
+            isLoadingFromAPI = true;
+            const response = await fetch(`${API_URL}/activities`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const result = await response.json();
+            if (result.success) {
+                activities = result.data || [];
+            } else {
+                activities = [];
+            }
+            renderActivities();
+        } catch (err) {
+            console.error('Failed to load activities:', err);
+            activities = [];
+            renderActivities();
+        } finally {
+            isLoadingFromAPI = false;
+        }
+    }
+
+    if (achievementForm) {
+        achievementForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const idEl = document.getElementById('achievementId');
+            const title = document.getElementById('achievementTitle').value.trim();
+            const date = document.getElementById('achievementDate').value;
+            const fileInput = document.getElementById('achievementImage');
+            const existingImageEl = document.getElementById('achievementExistingImage');
+            const description = document.getElementById('achievementDescription').value.trim();
+            const submitBtn = this.querySelector('button[type="submit"]');
+
+            if (!title || !description) return alert('Title dan description harus diisi');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving...';
+
+            try {
+                let imageUrl = existingImageEl?.value || '';
+                if (fileInput?.files?.length > 0) {
+                    const file = fileInput.files[0];
+                    imageUrl = await fileToDataURL(file);
+                }
+
+                const payload = { title, date: date || new Date().toISOString(), uploadImage: imageUrl, description };
+                let response;
+                if (idEl.value) {
+                    response = await fetch(`${API_URL}/achievements/${idEl.value}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    response = await fetch(`${API_URL}/achievements`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    achievementForm.reset();
+                    if (existingImageEl) existingImageEl.value = '';
+                    const preview = document.getElementById('achievementImagePreview');
+                    if (preview) { preview.src = ''; preview.style.display = 'none'; }
+                    idEl.value = '';
+                    achCancelBtns.forEach(b => b.style.display = 'none');
+                    await loadAchievements();
+                    alert(result.message || 'Achievement berhasil disimpan');
+                } else {
+                    alert('Error: ' + (result.message || 'Gagal menyimpan achievement'));
+                }
+                submitBtn.textContent = 'Save Achievement';
+                submitBtn.disabled = false;
+            } catch (err) {
+                console.error(err);
+                alert('Error saving achievement: ' + err.message);
+                submitBtn.textContent = 'Save Achievement';
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    if (activityForm) {
+        activityForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const idEl = document.getElementById('activityId');
+            const title = document.getElementById('activityTitle').value.trim();
+            const date = document.getElementById('activityDate').value;
+            const fileInput = document.getElementById('activityImage');
+            const existingImageEl = document.getElementById('activityExistingImage');
+            const description = document.getElementById('activityDescription').value.trim();
+            const submitBtn = this.querySelector('button[type="submit"]');
+
+            if (!title || !description) return alert('Title dan description harus diisi');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving...';
+
+            try {
+                let imageUrl = existingImageEl?.value || '';
+                if (fileInput?.files?.length > 0) {
+                    const file = fileInput.files[0];
+                    imageUrl = await fileToDataURL(file);
+                }
+
+                const payload = { title, date: date || new Date().toISOString(), uploadImage: imageUrl, description };
+                let response;
+                if (idEl.value) {
+                    response = await fetch(`${API_URL}/activities/${idEl.value}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    response = await fetch(`${API_URL}/activities`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    activityForm.reset();
+                    if (existingImageEl) existingImageEl.value = '';
+                    const preview = document.getElementById('activityImagePreview');
+                    if (preview) { preview.src = ''; preview.style.display = 'none'; }
+                    idEl.value = '';
+                    actCancelBtns.forEach(b => b.style.display = 'none');
+                    await loadActivities();
+                    alert(result.message || 'Activity berhasil disimpan');
+                } else {
+                    alert('Error: ' + (result.message || 'Gagal menyimpan activity'));
+                }
+                submitBtn.textContent = 'Save Activity';
+                submitBtn.disabled = false;
+            } catch (err) {
+                console.error(err);
+                alert('Error saving activity: ' + err.message);
+                submitBtn.textContent = 'Save Activity';
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    achCancelBtns.forEach(btn => btn.addEventListener('click', function() {
+        achievementForm.reset();
+        document.getElementById('achievementId').value = '';
+        this.style.display = 'none';
+    }));
+
+    actCancelBtns.forEach(btn => btn.addEventListener('click', function() {
+        activityForm.reset();
+        document.getElementById('activityId').value = '';
+        this.style.display = 'none';
+    }));
+
+    const achFileInput = document.getElementById('achievementImage');
+    const achPreview = document.getElementById('achievementImagePreview');
+    const achExisting = document.getElementById('achievementExistingImage');
+    if (achFileInput) {
+        achFileInput.addEventListener('change', async function() {
+            if (this.files && this.files[0]) {
+                const data = await fileToDataURL(this.files[0]);
+                if (achPreview) { achPreview.src = data; achPreview.style.display = 'block'; }
+                if (achExisting) achExisting.value = data;
+            } else {
+                if (achPreview) { achPreview.src=''; achPreview.style.display='none'; }
+                if (achExisting) achExisting.value = '';
+            }
+        });
+    }
+
+    const actFileInput = document.getElementById('activityImage');
+    const actPreview = document.getElementById('activityImagePreview');
+    const actExisting = document.getElementById('activityExistingImage');
+    if (actFileInput) {
+        actFileInput.addEventListener('change', async function() {
+            if (this.files && this.files[0]) {
+                const data = await fileToDataURL(this.files[0]);
+                if (actPreview) { actPreview.src = data; actPreview.style.display = 'block'; }
+                if (actExisting) actExisting.value = data;
+            } else {
+                if (actPreview) { actPreview.src=''; actPreview.style.display='none'; }
+                if (actExisting) actExisting.value = '';
+            }
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('edit-ach')) {
+            const id = e.target.getAttribute('data-id');
+            const item = achievements.find(a => a._id === id);
+            if (!item) return;
+            document.getElementById('achievementId').value = item._id;
+            document.getElementById('achievementTitle').value = item.title;
+            document.getElementById('achievementDate').value = item.date.split('T')[0];
+            const achExistingEl = document.getElementById('achievementExistingImage');
+            const achPreviewEl = document.getElementById('achievementImagePreview');
+            const achFileEl = document.getElementById('achievementImage');
+            if (achExistingEl) achExistingEl.value = item.uploadImage || '';
+            if (achPreviewEl) { achPreviewEl.src = item.uploadImage || ''; achPreviewEl.style.display = item.uploadImage ? 'block' : 'none'; }
+            if (achFileEl) achFileEl.value = '';
+            document.getElementById('achievementDescription').value = item.description;
+            achCancelBtns.forEach(b => b.style.display = 'inline-block');
+            document.querySelectorAll('.admin-tab').forEach(t => { if (t.dataset.tab === 'achievements') t.click(); });
+            if (document.getElementById('adminOverlay')) document.getElementById('adminOverlay').style.display = 'flex';
+        }
+
+        if (e.target.classList.contains('delete-ach')) {
+            const id = e.target.getAttribute('data-id');
+            if (!confirm('Hapus achievement ini?')) return;
+            fetch(`${API_URL}/achievements/${id}`, { method: 'DELETE' })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        alert(result.message);
+                        loadAchievements();
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                })
+                .catch(err => { console.error(err); alert('Error: ' + err.message); });
+        }
+
+        if (e.target.classList.contains('edit-act')) {
+            const id = e.target.getAttribute('data-id');
+            const item = activities.find(a => a._id === id);
+            if (!item) return;
+            document.getElementById('activityId').value = item._id;
+            document.getElementById('activityTitle').value = item.title;
+            document.getElementById('activityDate').value = item.date.split('T')[0];
+            const actExistingEl = document.getElementById('activityExistingImage');
+            const actPreviewEl = document.getElementById('activityImagePreview');
+            const actFileEl = document.getElementById('activityImage');
+            if (actExistingEl) actExistingEl.value = item.uploadImage || '';
+            if (actPreviewEl) { actPreviewEl.src = item.uploadImage || ''; actPreviewEl.style.display = item.uploadImage ? 'block' : 'none'; }
+            if (actFileEl) actFileEl.value = '';
+            document.getElementById('activityDescription').value = item.description;
+            actCancelBtns.forEach(b => b.style.display = 'inline-block');
+            document.querySelectorAll('.admin-tab').forEach(t => { if (t.dataset.tab === 'activities') t.click(); });
+            if (document.getElementById('adminOverlay')) document.getElementById('adminOverlay').style.display = 'flex';
+        }
+
+        if (e.target.classList.contains('delete-act')) {
+            const id = e.target.getAttribute('data-id');
+            if (!confirm('Hapus activity ini?')) return;
+            fetch(`${API_URL}/activities/${id}`, { method: 'DELETE' })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        alert(result.message);
+                        loadActivities();
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                })
+                .catch(err => { console.error(err); alert('Error: ' + err.message); });
+        }
+    });
+
+    loadAchievements();
+    loadActivities();
+
+    window.renderAchievements = renderAchievements;
+    window.renderActivities = renderActivities;
+    window.loadAchievements = loadAchievements;
+    window.loadActivities = loadActivities;
+})();
+
+// ---------- Contact form (send to email via FormSubmit) ----------
+(function(){ 
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) return;
+    const statusEl = document.getElementById('contactStatus');
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+    contactForm.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const endpoint = 'https://formsubmit.co/ajax/Arifalazis145@gmail.com';
+        const formData = new FormData(contactForm);
+
+        try {
+            submitBtn.disabled = true;
+            const origText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            statusEl.innerHTML = '';
+
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (res.ok) {
+                statusEl.innerHTML = '<p style="color:#155724; background:#d4edda; padding:8px; border-radius:6px;">Message sent! Terima kasih — saya akan menghubungi Anda segera.</p>';
+                contactForm.reset();
+            } else {
+                statusEl.innerHTML = '<p style="color:#721c24; background:#f8d7da; padding:8px; border-radius:6px;">Gagal mengirim pesan. Silakan coba lagi nanti.</p>';
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = origText;
+            setTimeout(() => { statusEl.innerHTML = ''; }, 7000);
+
+        } catch (err) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+            statusEl.innerHTML = '<p style="color:#721c24; background:#f8d7da; padding:8px; border-radius:6px;">Network error. Periksa koneksi Anda dan coba lagi.</p>';
+            setTimeout(() => { statusEl.innerHTML = ''; }, 7000);
+        }
+    });
+})();
+
+ </script>
+</body>
+</html>

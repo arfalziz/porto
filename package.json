@@ -1,0 +1,15 @@
+{
+  "name": "porto",
+  "version": "1.0.0",
+  "description": "Portfolio website with achievements and activities management",
+  "type": "module",
+  "scripts": {
+    "dev": "cd backend && npm run dev",
+    "start": "cd backend && npm start",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "mongodb": "^7.0.0",
+    "mongoose": "^8.19.4"
+  }
+}
